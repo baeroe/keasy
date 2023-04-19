@@ -5,7 +5,7 @@ import { PencilIcon } from '@heroicons/react/24/outline'
 import Spacer from './Spacer'
 
 export default function KeyCard(props) {
-  const { handleEditCard } = props
+  const { handleEditCard, handleDeleteCard } = props
   return (
     <div className="bg-slate-700 text-white w-full rounded shadow border border-slate-950 flex">
       <div className="p-2 w-full shadow">
@@ -26,7 +26,7 @@ export default function KeyCard(props) {
         <div className="mt-5">
           <input
             type="button"
-            value="Autofill"
+            value="Einfügen"
             className="bg-blue-500 py-1 px-2 rounded text-white text-sm cursor-pointer hover:bg-blue-400 hover:scale-105 t-200"
           />
         </div>
@@ -41,7 +41,10 @@ export default function KeyCard(props) {
         >
           <PencilIcon className="h-6 w-6 text-gray-500 group-hover:text-blue-500 t-200" />
         </div>
-        <div className="flex justify-center items-center hover:flex-grow hover:bg-red-500/10 cursor-pointer t-200 py-2 group">
+        <div
+          className="flex justify-center items-center hover:flex-grow hover:bg-red-500/10 cursor-pointer t-200 py-2 group"
+          onClick={handleDeleteCard}
+        >
           <TrashIcon className="h-6 w-6 text-gray-500 group-hover:text-red-500 t-200" />
         </div>
       </div>

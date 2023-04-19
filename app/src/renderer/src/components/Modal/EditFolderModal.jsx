@@ -21,9 +21,9 @@ export default function EditFolderModal(props) {
           <label htmlFor="folderName" className="text-gray-400 text-sm">
             Name:
           </label>
-          <input ref={inputRef} type="text" name="folderName" className="custom-text mb-2" />
+          <input ref={inputRef} type="text" name="folderName" className="custom-text mb-5" />
+          <input type="submit" className="custom-submit" value="Speichern" />
         </div>
-        <input type="submit" className="custom-submit" value="Save" />
       </form>
     </div>
   )

@@ -7,7 +7,7 @@
 }
 
 .custom-text {
-  @apply rounded p-1 outline-none w-60 shadow-inner border border-slate-950 focus:scale-105 transition-all duration-200;
+  @apply rounded p-1 outline-none w-80 shadow-inner border border-slate-950 focus:scale-105 transition-all duration-200 text-black;
 }
 
 .custom-submit {
@@ -24,4 +24,23 @@
 
 .t-200 {
   @apply transition-all duration-200;
+}
+
+.t-500 {
+  @apply transition-all duration-500;
+}
+
+.placement-logo {
+  left: calc(50% - 2.5rem);
+  top: -2.5rem;
+}
+
+.disabled-mode {
+  @apply opacity-0 pointer-events-none;
+}
+.disabled-mode-left {
+  @apply opacity-0 pointer-events-none -translate-x-72;
+}
+.disabled-mode-right {
+  @apply opacity-0 pointer-events-none translate-x-72;
 }

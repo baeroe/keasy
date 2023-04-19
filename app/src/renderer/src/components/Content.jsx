@@ -3,25 +3,44 @@ import KeyCard from './KeyCard'
 import { PlusIcon } from '@heroicons/react/20/solid'
 import Modal from './Modal/Modal'
 import EditCardModal from './Modal/EditCardModal'
+import DeleteCardModal from './Modal/DeleteCardModal'
 
 export default function Content() {
   const [editCardOpen, setEditCardOpen] = useState(false)
   const [cardInEdit, setCardInEdit] = useState(0)
 
-  const handleCloseModal = () => {
-    setCardInEdit(null)
+  const handleCloseEditModal = () => {
     setEditCardOpen(false)
+    setCardInEdit(null)
   }
   const handleEditCard = (card) => {
     setCardInEdit(card)
     setEditCardOpen(true)
+  }
+
+  const [deleteCardOpen, setDeleteCardOpen] = useState(false)
+  const [cardInDelete, setCardInDelete] = useState(0)
+
+  const handleCloseDeleteModal = () => {
+    setDeleteCardOpen(false)
+    setCardInDelete(null)
+  }
+  const handleDeleteCard = (card) => {
+    setCardInDelete(card)
+    setDeleteCardOpen(true)
   }
   return (
     <div className="w-full">
       <div className="w-full overflow-scroll h-body p-2 bg-slate-900">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 ">
           {[1, 2, 3, 4, 5, 6, 7].map((i) => {
-            return <KeyCard key={i} handleEditCard={handleEditCard} />
+            return (
+              <KeyCard
+                key={i}
+                handleEditCard={handleEditCard}
+                handleDeleteCard={handleDeleteCard}
+              />
+            )
           })}
           <div
             onClick={() => setEditCardOpen(true)}
@@ -34,9 +53,16 @@ export default function Content() {
 
       <Modal
         visible={editCardOpen}
-        closeModal={handleCloseModal}
-        title={cardInEdit ? 'Edit card' : 'New card'}
-        content={<EditCardModal inEditId={cardInEdit} />}
+        closeModal={handleCloseEditModal}
+        title={cardInEdit ? 'Keycard bearbeiten' : 'Neue Keycard'}
+        content={<EditCardModal inEditId={cardInEdit} visible={editCardOpen} />}
+      />
+
+      <Modal
+        visible={deleteCardOpen}
+        closeModal={handleCloseDeleteModal}
+        title="Keycard löschen"
+        content={<DeleteCardModal />}
       />
     </div>
   )
