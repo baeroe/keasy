@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer, dialog } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
@@ -11,9 +11,6 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
-    // contextBridge.exposeInMainWorld('keasy_io', {
-    //   openDialog: (method, config) => ipcRenderer.invoke('dialog', method, config)
-    // })
   } catch (error) {
     console.error(error)
   }

@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, dialog, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+const fs = require('fs')
 import icon from '../../resources/icon.png?asset'
 
 function createWindow() {
@@ -15,6 +16,19 @@ function createWindow() {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     }
+  })
+
+  ipcMain.handle('showOpenDialog', (event, config) => {
+    return dialog.showOpenDialog(config)
+  })
+
+  ipcMain.handle('writeFileSync', (event, config) => {
+    fs.writeFileSync(config.path, config.content)
+  })
+
+  ipcMain.handle('readFileSync', (event, path) => {
+    var buffer = fs.readFileSync(path)
+    return buffer.toString()
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -39,11 +53,6 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  // register dialog event
-  ipcMain.handle('dialog', (event, method, params) => {
-    dialog[method](params)
-  })
-
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 
