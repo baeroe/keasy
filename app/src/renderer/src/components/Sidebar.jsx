@@ -5,20 +5,20 @@ import EditFolderModal from './Modal/EditFolderModal'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { PencilIcon } from '@heroicons/react/24/outline'
 import DeleteFolderModal from './Modal/DeleteFolderModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectFolder } from '../redux/optionsSlice'
 
 export default function Sidebar() {
-  const [menu, setMenu] = useState([
-    {
-      id: 1,
-      name: 'Private',
-      icon: 'home'
-    },
-    {
-      id: 2,
-      name: 'Work',
-      icon: 'office'
+  const dispatch = useDispatch()
+  const folders = useSelector((state) => state.data.folders)
+  const selectedFolder = useSelector((state) => state.options.selectedFolder)
+
+  useEffect(() => {
+    if (selectedFolder == 0) {
+      dispatch(selectFolder(folders[0].id))
     }
-  ])
+  }, [])
+
   const [editFolderOpen, setEditFolderOpen] = useState(false)
   const [folderInEdit, setFolderInEdit] = useState(null)
 
@@ -45,25 +45,35 @@ export default function Sidebar() {
     setFolderInEdit(null)
   }
 
+  const handleSelectFolder = (item) => {
+    dispatch(selectFolder(item.id))
+  }
+
   return (
     <div className="flex flex-col h-body overflow-hidden w-60 bg-slate-700 border-r border-slate-950 shadow px-3">
       <span className="text-xs text-slate-500 mt-2 ml-2">Ordner</span>
-      {menu.map((item) => (
-        <div key={item.id} className="sidebar-btn flex justify-between group">
+      {folders.map((item) => (
+        <div
+          key={item.id}
+          className={`sidebar-btn flex justify-between group ${
+            selectedFolder === item.id ? 'bg-slate-600' : ''
+          }`}
+          onClick={() => handleSelectFolder(item)}
+        >
           <span>{item.name}</span>
           <div className="hidden justify-center items-center group-hover:flex">
             <PencilIcon
               className="h-5 w-5 hover:text-blue-500 mr-2 t-200"
-              onClick={() => handleEditFolder(item.id)}
+              onClick={() => handleEditFolder(item)}
             />
             <TrashIcon
-              onClick={() => handleDeleteFolder(item.id)}
+              onClick={() => handleDeleteFolder(item)}
               className="h-5 w-5 hover:text-red-500 t-200"
             />
           </div>
         </div>
       ))}
-      <div className="sidebar-btn" onClick={() => setEditFolderOpen(true)}>
+      <div className="sidebar-btn" onClick={() => handleEditFolder(null)}>
         <PlusIcon className="h-6 w-6 text-white mr-2" />
         Neuer Ordner
       </div>
@@ -74,7 +84,11 @@ export default function Sidebar() {
         closeModal={handleCloseEditModal}
         title={folderInEdit ? 'Ordner bearbeiten' : 'Neuer Ordner'}
         content={
-          <EditFolderModal closeModal={() => setEditFolderOpen(false)} visible={editFolderOpen} />
+          <EditFolderModal
+            closeModal={() => setEditFolderOpen(false)}
+            visible={editFolderOpen}
+            folder={folderInEdit}
+          />
         }
       />
 
@@ -87,6 +101,7 @@ export default function Sidebar() {
           <DeleteFolderModal
             closeModal={() => setDeleteFolderOpen(false)}
             visible={deleteFolderOpen}
+            folder={folderInDelete}
           />
         }
       />

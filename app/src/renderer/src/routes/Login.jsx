@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { useSystemService } from '../services/systemService'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { init } from '../redux/dataSlice'
 import { setPath, setPassword } from '../redux/optionsSlice'
 
@@ -12,24 +12,27 @@ export default function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const options = useSelector((state) => state.options)
+  const data = useSelector((state) => state.data)
+
   ///////////////////////////
-  // select or create view //
+  // open or create view //
   ///////////////////////////
 
-  const select = useRef(null)
+  const open = useRef(null)
   const create = useRef(null)
 
   const switchModeCreate = () => {
-    select.current.classList.remove('delay-200')
-    select.current.classList.add('disabled-mode')
+    open.current.classList.remove('delay-200')
+    open.current.classList.add('disabled-mode')
     create.current.classList.add('delay-200')
     create.current.classList.remove('disabled-mode-right')
   }
-  const switchModeSelect = () => {
+  const switchModeOpen = () => {
     create.current.classList.remove('delay-200')
     create.current.classList.add('disabled-mode-right')
-    select.current.classList.add('delay-200')
-    select.current.classList.remove('disabled-mode')
+    open.current.classList.add('delay-200')
+    open.current.classList.remove('disabled-mode')
   }
 
   /////////////////////
@@ -37,38 +40,31 @@ export default function Login() {
   /////////////////////
 
   const [newFilePath, setNewFilePath] = useState('')
-  const [newPW, setNewPW] = useState('')
-  const [newPWConfirm, setNewPWConfirm] = useState('')
+  const [createPassword, setCreatePassword] = useState('')
+  const [createPasswordConfirm, setCreatePasswordConfirm] = useState('')
 
   const handleSelectLocation = async (e) => {
     var result = await systemService.selectFolderAsync()
-    console.log(result)
     if (result.canceled) return
     setNewFilePath(result.filePaths[0] + '/keasyfile')
   }
 
   const handleCreate = async (e) => {
-    e.preventDefault()
-
-    if (newPW !== newPWConfirm) {
+    if (createPassword !== createPasswordConfirm) {
       alert('Passwörter müssen übereinstimmen')
       return
     }
 
-    var result = await systemService.initKeasyFile(newFilePath, newPW)
-    dispatch(init(result))
-    dispatch(setPath(newFilePath))
-    dispatch(setPassword(newPW))
-
+    var result = await systemService.initKeasyFile(newFilePath, createPassword)
     setFilePath(newFilePath)
-    switchModeSelect()
+    switchModeOpen()
   }
 
   //////////////////////////
-  // select file and open //
+  // open file and open //
   //////////////////////////
   const [filePath, setFilePath] = useState(localStorage.getItem('lastKeasyfile') || '')
-  const [PW, setPW] = useState('')
+  const [openPassword, setOpenPassword] = useState('')
 
   const handleSelectFile = async (e) => {
     var result = await systemService.selectFileAsync()
@@ -79,23 +75,24 @@ export default function Login() {
   }
 
   const handleOpen = async (e) => {
-    var data = await systemService.readKeasyFile(filePath, PW)
-    if (!data.success) {
+    var result = await systemService.readKeasyFile(filePath, openPassword)
+    if (!result.success) {
       alert('Wrong password')
       return
     }
-    dispatch(init(data.data))
-    dispatch(setPath(filePath))
-    dispatch(setPassword(PW))
 
-    navigate('/')
+    dispatch(init(result.data))
+    dispatch(setPath(filePath))
+    dispatch(setPassword(openPassword))
+
+    navigate('/app')
   }
 
   return (
     <div className="w-screen h-screen flex flex-col bg-slate-900 text-white justify-center items-center ">
       {/* init */}
       <div
-        ref={select}
+        ref={open}
         className="bg-slate-800 p-10 absolute shadow border border-slate-950 rounded t-500"
       >
         <div className="flex flex-col text-center w-80">
@@ -112,8 +109,8 @@ export default function Login() {
           <input
             type="password"
             className="custom-text !w-full mb-6"
-            value={PW}
-            onChange={(e) => setPW(e.target.value)}
+            value={openPassword}
+            onChange={(e) => setOpenPassword(e.target.value)}
           />
           <input
             type="button"
@@ -142,7 +139,7 @@ export default function Login() {
         className="bg-slate-800 p-10 absolute shadow border border-slate-950 rounded t-500 disabled-mode-right"
       >
         <ArrowLeftIcon
-          onClick={() => switchModeSelect()}
+          onClick={() => switchModeOpen()}
           className="h-6 w-6 text-gray-500 hover:scale-110 hover:text-gray-400 t-200 cursor-pointer"
         />
 
@@ -159,15 +156,15 @@ export default function Login() {
           <input
             type="password"
             className="custom-text !w-full mb-3"
-            value={newPW}
-            onChange={(e) => setNewPW(e.target.value)}
+            value={createPassword}
+            onChange={(e) => setCreatePassword(e.target.value)}
           />
           <label className="text-xs mb-1">Confirm the password</label>
           <input
             type="password"
             className="custom-text !w-full mb-5"
-            value={newPWConfirm}
-            onChange={(e) => setNewPWConfirm(e.target.value)}
+            value={createPasswordConfirm}
+            onChange={(e) => setCreatePasswordConfirm(e.target.value)}
           />
           <input type="submit" className="custom-submit" value="Create" />
         </form>

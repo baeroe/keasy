@@ -4,7 +4,7 @@ import App from './routes/App'
 import Login from './routes/Login'
 import { store } from './redux/store'
 import { Provider } from 'react-redux'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 
 import './assets/styles/tailwind.css'
 import './assets/styles/main.css'
@@ -12,11 +12,15 @@ import './assets/styles/animations.css'
 
 const router = createBrowserRouter([
   {
+    path: '/',
+    element: <Navigate to="/login" />
+  },
+  {
     path: '/login',
     element: <Login />
   },
   {
-    path: '/',
+    path: '/app',
     element: <App />
   }
 ])

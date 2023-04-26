@@ -64,7 +64,7 @@ class SystemService {
       content: encrypted
     }
 
-    await electron.ipcRenderer.invoke('writeFileSync', writeFileConfig)
+    var result = await electron.ipcRenderer.invoke('writeFileSync', writeFileConfig)
   }
 }
 

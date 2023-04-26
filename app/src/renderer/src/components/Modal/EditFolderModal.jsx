@@ -1,12 +1,23 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { updateFolder, addFolder } from '../../redux/dataSlice'
 
 export default function EditFolderModal(props) {
-  const { closeModal, visible } = props
-  const handleSubmit = () => {
-    console.log('submit')
+  const { closeModal, visible, folder } = props
+  const dispatch = useDispatch()
+  const inputRef = useRef(null)
+  const [foldername, setFoldername] = useState(folder ? folder.name : '')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (folder) {
+      dispatch(updateFolder({ ...folder, name: foldername }))
+      closeModal()
+      return
+    }
+    dispatch(addFolder({ name: foldername }))
     closeModal()
   }
-  const inputRef = useRef(null)
 
   useEffect(() => {
     if (visible) {
@@ -16,12 +27,19 @@ export default function EditFolderModal(props) {
 
   return (
     <div>
-      <form action={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col">
           <label htmlFor="folderName" className="text-gray-400 text-sm">
             Name:
           </label>
-          <input ref={inputRef} type="text" name="folderName" className="custom-text mb-5" />
+          <input
+            ref={inputRef}
+            type="text"
+            name="folderName"
+            className="custom-text mb-5"
+            defaultValue={foldername}
+            onChange={(e) => setFoldername(e.target.value)}
+          />
           <input type="submit" className="custom-submit" value="Speichern" />
         </div>
       </form>

@@ -1,13 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import KeyCard from './KeyCard'
 import { PlusIcon } from '@heroicons/react/20/solid'
 import Modal from './Modal/Modal'
 import EditCardModal from './Modal/EditCardModal'
 import DeleteCardModal from './Modal/DeleteCardModal'
+import { useSelector } from 'react-redux'
 
 export default function Content() {
   const [editCardOpen, setEditCardOpen] = useState(false)
-  const [cardInEdit, setCardInEdit] = useState(0)
+  const [cardInEdit, setCardInEdit] = useState(null)
+
+  const folders = useSelector((state) => state.data.folders)
+  const selectedFolderId = useSelector((state) => state.options.selectedFolder)
+  const [cards, setCards] = useState([])
+
+  useEffect(() => {
+    var selectedFolder = folders.filter((f) => f.id === selectedFolderId)[0]
+
+    if (!selectedFolder) {
+      setCards([])
+      return
+    }
+
+    var sortedCards = [...selectedFolder.cards].sort((a, b) => {
+      if (a.fav && !b.fav) {
+        return -1
+      }
+      if (!a.fav && b.fav) {
+        return 1
+      }
+      return 0
+    })
+
+    setCards(sortedCards)
+  }, [selectedFolderId, folders])
 
   const handleCloseEditModal = () => {
     setEditCardOpen(false)
@@ -33,12 +59,13 @@ export default function Content() {
     <div className="w-full">
       <div className="w-full overflow-scroll h-body p-2 bg-slate-900">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 ">
-          {[1, 2, 3, 4, 5, 6, 7].map((i) => {
+          {cards.map((card) => {
             return (
               <KeyCard
-                key={i}
-                handleEditCard={handleEditCard}
-                handleDeleteCard={handleDeleteCard}
+                key={card.id}
+                card={card}
+                handleEditCard={() => handleEditCard(card)}
+                handleDeleteCard={() => handleDeleteCard(card)}
               />
             )
           })}
@@ -55,14 +82,20 @@ export default function Content() {
         visible={editCardOpen}
         closeModal={handleCloseEditModal}
         title={cardInEdit ? 'Keycard bearbeiten' : 'Neue Keycard'}
-        content={<EditCardModal inEditId={cardInEdit} visible={editCardOpen} />}
+        content={
+          <EditCardModal
+            card={cardInEdit}
+            visible={editCardOpen}
+            closeModal={handleCloseEditModal}
+          />
+        }
       />
 
       <Modal
         visible={deleteCardOpen}
         closeModal={handleCloseDeleteModal}
         title="Keycard löschen"
-        content={<DeleteCardModal />}
+        content={<DeleteCardModal closeModal={handleCloseDeleteModal} card={cardInDelete} />}
       />
     </div>
   )

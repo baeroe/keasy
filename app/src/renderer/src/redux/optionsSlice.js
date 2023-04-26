@@ -1,28 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  value: {
-    path: '',
-    password: ''
-  }
+  path: '',
+  password: '',
+  triggerUpdate: false,
+  selectedFolder: 0
 }
 
-export const dataSlice = createSlice({
-  name: 'data',
+export const optionsSlice = createSlice({
+  name: 'options',
   initialState,
   reducers: {
     setPassword: (state, action) => {
-      state.value.password = action.payload
+      state.password = action.payload
     },
     setPath: (state, action) => {
-      state.value.path = action.payload
+      state.path = action.payload
     },
-    setOptions: (state, action) => {
-      state.value = action.payload
+    setTriggerUpdate: (state, action) => {
+      state.triggerUpdate = action.payload
+    },
+    selectFolder: (state, action) => {
+      state.selectedFolder = action.payload
     }
   }
 })
 
-export const { setPassword, setPath, setOptions } = dataSlice.actions
+export const { setPassword, setPath, setTriggerUpdate, selectFolder } = optionsSlice.actions
 
-export default dataSlice.reducer
+export default optionsSlice.reducer

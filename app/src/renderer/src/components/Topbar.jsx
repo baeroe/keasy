@@ -3,11 +3,18 @@ import { ArrowLeftOnRectangleIcon, Cog6ToothIcon } from '@heroicons/react/20/sol
 import Modal from './Modal/Modal'
 import SettingsModal from './Modal/SettingsModal'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setPath, setPassword } from '../redux/optionsSlice'
+import { clear } from '../redux/dataSlice'
 
 export default function Topbar() {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const handleLogOut = () => {
+    dispatch(setPath(''))
+    dispatch(setPassword(''))
+    dispatch(clear())
     navigate('/login')
   }
   return (
