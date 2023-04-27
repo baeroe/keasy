@@ -36,12 +36,12 @@ export default function EditCardModal(props) {
   }
 
   const inputRef = useRef(null)
-
   useEffect(() => {
     if (visible) {
       inputRef.current.focus()
     }
   }, [visible])
+
   return (
     <div>
       <form onSubmit={handleSubmit}>

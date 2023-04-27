@@ -66,6 +66,15 @@ class SystemService {
 
     var result = await electron.ipcRenderer.invoke('writeFileSync', writeFileConfig)
   }
+
+  async minimizeAndPasteCredentials(card) {
+    const credentials = {
+      username: card.username,
+      password: card.password
+    }
+
+    await electron.ipcRenderer.invoke('minimizeAndPasteCredentials', credentials)
+  }
 }
 
 export const useSystemService = () => {

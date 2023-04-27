@@ -69,12 +69,14 @@ export default function Content() {
               />
             )
           })}
-          <div
-            onClick={() => setEditCardOpen(true)}
-            className="bg-slate-800 hover:bg-slate-700 text-white w-full h-full rounded shadow border border-slate-950 flex justify-center items-center cursor-pointer group transition-all duration-200"
-          >
-            <PlusIcon className="h-12 w-12 my-12 text-white group-hover:scale-125 transition-all duration-200" />
-          </div>
+          {selectedFolderId && (
+            <div
+              onClick={() => setEditCardOpen(true)}
+              className="bg-slate-800 hover:bg-slate-700 text-white w-full h-full rounded shadow border border-slate-950 flex justify-center items-center cursor-pointer group transition-all duration-200"
+            >
+              <PlusIcon className="h-12 w-12 my-12 text-white group-hover:scale-125 transition-all duration-200" />
+            </div>
+          )}
         </div>
       </div>
 

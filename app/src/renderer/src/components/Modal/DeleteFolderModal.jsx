@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { removeFolder } from '../../redux/dataSlice'
+import { selectFolder } from '../../redux/optionsSlice'
 
 export default function DeleteFolderModal(props) {
   const { closeModal, visible, folder } = props
@@ -8,6 +9,7 @@ export default function DeleteFolderModal(props) {
 
   const handleDelete = (e) => {
     dispatch(removeFolder(folder.id))
+    dispatch(selectFolder(0))
     closeModal()
   }
 

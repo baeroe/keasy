@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, dialog, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, dialog, ipcMain, clipboard } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 const fs = require('fs')
@@ -29,6 +29,10 @@ function createWindow() {
   ipcMain.handle('readFileSync', (event, path) => {
     var buffer = fs.readFileSync(path)
     return buffer.toString()
+  })
+
+  ipcMain.handle('minimizeAndPasteCredentials', (event, config) => {
+    mainWindow.minimize()
   })
 
   mainWindow.on('ready-to-show', () => {

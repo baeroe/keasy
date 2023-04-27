@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { useSystemService } from '../services/systemService'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,6 +14,17 @@ export default function Login() {
 
   const options = useSelector((state) => state.options)
   const data = useSelector((state) => state.data)
+
+  ///////////////////////////////
+  // start with focus on input //
+  ///////////////////////////////
+
+  const inputRef = useRef(null)
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current.focus()
+    }, 1)
+  }, [])
 
   ///////////////////////////
   // open or create view //
@@ -55,7 +66,7 @@ export default function Login() {
       return
     }
 
-    var result = await systemService.initKeasyFile(newFilePath, createPassword)
+    await systemService.initKeasyFile(newFilePath, createPassword)
     setFilePath(newFilePath)
     switchModeOpen()
   }
@@ -75,6 +86,7 @@ export default function Login() {
   }
 
   const handleOpen = async (e) => {
+    e.preventDefault()
     var result = await systemService.readKeasyFile(filePath, openPassword)
     if (!result.success) {
       alert('Wrong password')
@@ -90,34 +102,33 @@ export default function Login() {
 
   return (
     <div className="w-screen h-screen flex flex-col bg-slate-900 text-white justify-center items-center ">
-      {/* init */}
+      {/* select */}
       <div
         ref={open}
         className="bg-slate-800 p-10 absolute shadow border border-slate-950 rounded t-500"
       >
         <div className="flex flex-col text-center w-80">
           <h1 className="mb-8 text-2xl">Wilkommen bei Keasy</h1>
-
-          <label className="text-xs mb-1 text-left">Wähle dein Keasyfile aus</label>
-          <input
-            type="button"
-            className=" border-slate-950 bg-slate-600 text-xs rounded py-1 px-2 mb-3 cursor-pointer t-200 hover:scale-105 text-left"
-            value={filePath}
-            onClick={handleSelectFile}
-          />
-          <label className="text-xs mb-1 text-left">Gib dein Passwort zum Entschlüsseln ein</label>
-          <input
-            type="password"
-            className="custom-text !w-full mb-6"
-            value={openPassword}
-            onChange={(e) => setOpenPassword(e.target.value)}
-          />
-          <input
-            type="button"
-            className="custom-submit cursor-pointer mb-10"
-            value="Öffnen"
-            onClick={handleOpen}
-          />
+          <form className="flex flex-col text-center" onSubmit={handleOpen}>
+            <label className="text-xs mb-1 text-left">Wähle dein Keasyfile aus</label>
+            <input
+              type="button"
+              className=" border-slate-950 bg-slate-600 text-xs rounded py-1 px-2 mb-3 cursor-pointer t-200 hover:scale-105 text-left"
+              value={filePath}
+              onClick={handleSelectFile}
+            />
+            <label className="text-xs mb-1 text-left">
+              Gib dein Passwort zum Entschlüsseln ein
+            </label>
+            <input
+              ref={inputRef}
+              type="password"
+              className="custom-text !w-full mb-6"
+              defaultValue={openPassword}
+              onChange={(e) => setOpenPassword(e.target.value)}
+            />
+            <input type="submit" className="custom-submit cursor-pointer mb-10" value="Öffnen" />
+          </form>
           <span className="text-sm mb-3">oder erstelle ein neues Keasyfile</span>
           <input
             type="button"

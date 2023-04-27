@@ -15,7 +15,9 @@ export default function Sidebar() {
 
   useEffect(() => {
     if (selectedFolder == 0) {
-      dispatch(selectFolder(folders[0].id))
+      if (folders.length) {
+        dispatch(selectFolder(folders[0].id))
+      }
     }
   }, [])
 

@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import './assets/styles/tailwind.css'
 import './assets/styles/main.css'
 import './assets/styles/animations.css'
+import 'react-tooltip/dist/react-tooltip.css'
 
 const router = createBrowserRouter([
   {
