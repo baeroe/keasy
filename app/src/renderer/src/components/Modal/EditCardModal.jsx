@@ -12,9 +12,14 @@ export default function EditCardModal(props) {
   const [cardName, setCardName] = useState(card ? card.name : '')
   const [cardUserName, setCardUserName] = useState(card ? card.username : '')
   const [cardPassword, setCardPassword] = useState(card ? card.password : '')
+  const [validationSet, setValidationSet] = useState([])
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    if (!validateForm()) {
+      return
+    }
 
     if (card) {
       dispatch(
@@ -35,6 +40,22 @@ export default function EditCardModal(props) {
     closeModal()
   }
 
+  const validateForm = () => {
+    var result = []
+    if (cardName == '') {
+      result.push('name')
+    }
+    if (cardUserName == '') {
+      result.push('username')
+    }
+    if (cardPassword == '') {
+      result.push('password')
+    }
+
+    setValidationSet(result)
+    return result.length === 0
+  }
+
   const inputRef = useRef(null)
   useEffect(() => {
     if (visible) {
@@ -47,33 +68,39 @@ export default function EditCardModal(props) {
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col w-80">
           <label htmlFor="folderName" className="text-gray-400 text-sm">
-            Name:
+            Name:<span className="text-red-500 ml-0.5">*</span>
           </label>
           <input
             ref={inputRef}
             type="text"
             name="folderName"
-            className="custom-text mb-5"
+            className={`custom-text mb-5 ${
+              validationSet.includes('name') ? '!bg-red-100 !border-red-500 border' : ''
+            }`}
             defaultValue={cardName}
             onChange={(e) => setCardName(e.target.value)}
           />
           <label htmlFor="folderName" className="text-gray-400 text-sm">
-            Benutzername:
+            Benutzername:<span className="text-red-500 ml-0.5">*</span>
           </label>
           <input
             type="text"
             name="folderName"
-            className="custom-text mb-5"
+            className={`custom-text mb-5 ${
+              validationSet.includes('username') ? '!bg-red-100 !border-red-500 border' : ''
+            }`}
             defaultValue={cardUserName}
             onChange={(e) => setCardUserName(e.target.value)}
           />
           <label htmlFor="folderName" className="text-gray-400 text-sm">
-            Passwort:
+            Passwort:<span className="text-red-500 ml-0.5">*</span>
           </label>
           <input
             type="password"
             name="folderName"
-            className="custom-text mb-5"
+            className={`custom-text mb-5 ${
+              validationSet.includes('password') ? '!bg-red-100 !border-red-500 border' : ''
+            }`}
             defaultValue={cardPassword}
             onChange={(e) => setCardPassword(e.target.value)}
           />

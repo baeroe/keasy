@@ -4,6 +4,7 @@ import { useSystemService } from '../services/systemService'
 import { useDispatch, useSelector } from 'react-redux'
 import { init } from '../redux/dataSlice'
 import { setPath, setPassword } from '../redux/optionsSlice'
+import toast, { Toaster } from 'react-hot-toast'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -12,8 +13,10 @@ export default function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const options = useSelector((state) => state.options)
-  const data = useSelector((state) => state.data)
+  const toastConfig = {
+    duration: 2000,
+    className: 'bg-red-500 text-white'
+  }
 
   ///////////////////////////////
   // start with focus on input //
@@ -61,8 +64,21 @@ export default function Login() {
   }
 
   const handleCreate = async (e) => {
+    e.preventDefault()
+
+    if (newFilePath === '') {
+      toast('Kein Speicherort ausgewählt', toastConfig)
+      return
+    }
+
+    var existing = await systemService.isFileExisting(newFilePath)
+    if (existing) {
+      toast('Datei existiert bereits', toastConfig)
+      return
+    }
+
     if (createPassword !== createPasswordConfirm) {
-      alert('Passwörter müssen übereinstimmen')
+      toast('Passwörter stimmen nicht überein', toastConfig)
       return
     }
 
@@ -87,9 +103,18 @@ export default function Login() {
 
   const handleOpen = async (e) => {
     e.preventDefault()
+
+    var exists = await systemService.isFileExisting(filePath)
+    if (!exists) {
+      toast('Datei existiert nicht', toastConfig)
+      setFilePath('')
+      setOpenPassword('')
+      return
+    }
     var result = await systemService.readKeasyFile(filePath, openPassword)
     if (!result.success) {
-      alert('Wrong password')
+      toast('Falsches Passwort', toastConfig)
+      setOpenPassword('')
       return
     }
 
@@ -180,6 +205,7 @@ export default function Login() {
           <input type="submit" className="custom-submit" value="Create" />
         </form>
       </div>
+      <Toaster />
     </div>
   )
 }

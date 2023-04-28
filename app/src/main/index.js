@@ -30,9 +30,18 @@ function createWindow() {
     var buffer = fs.readFileSync(path)
     return buffer.toString()
   })
+  ipcMain.handle('isFileExisting', (event, path) => {
+    return fs.existsSync(path)
+  })
 
   ipcMain.handle('minimizeAndPasteCredentials', (event, config) => {
-    mainWindow.minimize()
+    // mainWindow.minimize()
+    // mainWindow.hide()
+    // if (process.platform == 'darwin') app.hide()
+    // mainWindow.minimize()
+    // clipboard.writeText(config.username)
+    // // 'command+k', 'ctrl+k'
+    // mainWindow.webContents.sendInputEvent({ keyCode: 'CommandOrControl+V', type: 'keyDown' })
   })
 
   mainWindow.on('ready-to-show', () => {

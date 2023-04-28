@@ -57,12 +57,12 @@ export default function Sidebar() {
       {folders.map((item) => (
         <div
           key={item.id}
-          className={`sidebar-btn flex justify-between group ${
-            selectedFolder === item.id ? 'bg-slate-600' : ''
+          className={`sidebar-btn flex justify-between group t-200 ${
+            selectedFolder === item.id ? 'bg-slate-600 border border-slate-950 shadow' : ''
           }`}
           onClick={() => handleSelectFolder(item)}
         >
-          <span>{item.name}</span>
+          <div className="truncate">{item.name}</div>
           <div className="hidden justify-center items-center group-hover:flex">
             <PencilIcon
               className="h-5 w-5 hover:text-blue-500 mr-2 t-200"
@@ -75,8 +75,8 @@ export default function Sidebar() {
           </div>
         </div>
       ))}
-      <div className="sidebar-btn" onClick={() => handleEditFolder(null)}>
-        <PlusIcon className="h-6 w-6 text-white mr-2" />
+      <div className="sidebar-btn t-200" onClick={() => handleEditFolder(null)}>
+        <PlusIcon className="h-6 w-6 text-white mr-2 " />
         Neuer Ordner
       </div>
 

@@ -1,5 +1,5 @@
 .topbar-btn {
-  @apply text-white hover:bg-black/20 hover:shadow-inner p-1 rounded cursor-pointer;
+  @apply text-white hover:bg-black/20 hover:shadow-inner p-1 rounded cursor-pointer t-200;
 }
 
 .sidebar-btn {
@@ -20,6 +20,10 @@
 
 .h-body {
   height: calc(100vh - 3rem);
+}
+
+.w-card-content {
+  width: calc(100% - 3rem);
 }
 
 .t-200 {

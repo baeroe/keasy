@@ -9,7 +9,7 @@ import { updateCard } from '../redux/dataSlice'
 import { EyeSlashIcon } from '@heroicons/react/24/outline'
 import { EyeIcon } from '@heroicons/react/24/outline'
 import { useSystemService } from '../services/systemService'
-
+import toast, { Toaster } from 'react-hot-toast'
 import Spacer from './Spacer'
 
 export default function KeyCard(props) {
@@ -17,6 +17,11 @@ export default function KeyCard(props) {
   const { handleEditCard, handleDeleteCard, card } = props
   const dispatch = useDispatch()
   const selectedFolder = useSelector((state) => state.options.selectedFolder)
+
+  const toastConfig = {
+    duration: 2000,
+    className: 'bg-slate-700 text-white'
+  }
 
   const handleSetFav = () => {
     dispatch(
@@ -29,27 +34,34 @@ export default function KeyCard(props) {
 
   const handleCopyPassword = () => {
     navigator.clipboard.writeText(card.password)
+    toast('Passwort kopiert!', { ...toastConfig, icon: '🔑' })
   }
 
   const handleCopyUsername = () => {
     navigator.clipboard.writeText(card.username)
+    toast('Benutzername kopiert!', { ...toastConfig, icon: '👤' })
   }
 
   const handleMinimizeAndPaste = async () => {
     await systemService.minimizeAndPasteCredentials(card)
   }
 
+  const handleSetPwVisible = (e) => {
+    setPwVisible(!pwVisible)
+    e.stopPropagation()
+  }
+
   const [pwVisible, setPwVisible] = useState(false)
   return (
     <div className="bg-slate-700 text-white w-full rounded shadow border border-slate-950 flex">
-      <div className="p-2 w-full shadow">
-        <span>{card.name}</span>
+      <div className="p-2 w-card-content shadow">
+        <div className="w-full truncate">{card.name}</div>
 
         <Spacer />
 
         <div className="flex flex-col">
           <div
-            className="text-sm py-1 px-2 bg-slate-800 border border-slate-950 rounded cursor-pointer"
+            className="text-sm py-1 px-2 bg-slate-800 border border-slate-950 rounded cursor-pointer truncate hover:scale-105 t-200"
             onClick={handleCopyUsername}
           >
             {card.username}
@@ -60,14 +72,20 @@ export default function KeyCard(props) {
 
         <div className="flex flex-col">
           <div
-            className="text-sm py-1 px-2 bg-slate-800 border border-slate-950 rounded cursor-pointer flex justify-between items-center"
+            className="text-sm py-1 px-2 bg-slate-800 border border-slate-950 rounded cursor-pointer flex justify-between items-center hover:scale-105 t-200"
             onClick={handleCopyPassword}
           >
-            {pwVisible ? <span>{card.password}</span> : <span>********</span>}
+            {pwVisible ? <div className="truncate">{card.password}</div> : <div>********</div>}
             {pwVisible ? (
-              <EyeSlashIcon className="h-5 w-5 text-gray-500" />
+              <EyeSlashIcon
+                className="h-5 w-5 text-gray-500 hover:text-gray-300 t-200"
+                onClick={handleSetPwVisible}
+              />
             ) : (
-              <EyeIcon className="h-5 w-5 text-gray-500" />
+              <EyeIcon
+                className="h-5 w-5 text-gray-500 hover:text-gray-300 t-200"
+                onClick={handleSetPwVisible}
+              />
             )}
           </div>
         </div>
@@ -105,6 +123,7 @@ export default function KeyCard(props) {
           <TrashIcon className="h-6 w-6 text-gray-500 group-hover:text-red-500 t-200" />
         </div>
       </div>
+      <Toaster />
     </div>
   )
 }

@@ -38,6 +38,10 @@ class SystemService {
     return initContent
   }
 
+  async isFileExisting(path) {
+    return await electron.ipcRenderer.invoke('isFileExisting', path)
+  }
+
   async readKeasyFile(path, password) {
     try {
       var encrypted = await electron.ipcRenderer.invoke('readFileSync', path)
