@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { updateFolder, addFolder } from '../../redux/dataSlice'
+import { useTranslation } from 'react-i18next'
 
 export default function EditFolderModal(props) {
   const { closeModal, visible, folder } = props
@@ -8,6 +9,7 @@ export default function EditFolderModal(props) {
   const inputRef = useRef(null)
   const [foldername, setFoldername] = useState(folder ? folder.name : '')
   const [validationSet, setValidationSet] = useState([])
+  const { t } = useTranslation()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -37,7 +39,7 @@ export default function EditFolderModal(props) {
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col">
           <label htmlFor="folderName" className="text-gray-400 text-sm">
-            Name:<span className="text-red-500 ml-0.5">*</span>
+            {t('folderName')}:<span className="text-red-500 ml-0.5">*</span>
           </label>
           <input
             ref={inputRef}
@@ -49,7 +51,7 @@ export default function EditFolderModal(props) {
             defaultValue={foldername}
             onChange={(e) => setFoldername(e.target.value)}
           />
-          <input type="submit" className="custom-submit" value="Speichern" />
+          <input type="submit" className="custom-submit" value={t('save')} />
         </div>
       </form>
     </div>

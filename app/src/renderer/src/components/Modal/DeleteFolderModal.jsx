@@ -2,11 +2,13 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { removeFolder } from '../../redux/dataSlice'
 import { selectFolder } from '../../redux/optionsSlice'
+import { useTranslation } from 'react-i18next'
 
 export default function DeleteFolderModal(props) {
   const { closeModal, visible, folder } = props
   const dispatch = useDispatch()
 
+  const { t } = useTranslation()
   const handleDelete = (e) => {
     dispatch(removeFolder(folder.id))
     dispatch(selectFolder(0))
@@ -16,12 +18,10 @@ export default function DeleteFolderModal(props) {
   return (
     <div>
       <div className="flex flex-col">
-        <span className="text-white mb-5 text-center">
-          Bist du dir sicher, dass du den Ordner mit <br /> allen Keycards löschen möchstest?
-        </span>
+        <span className="text-white mb-5 text-center">{t('deleteFolderText')}</span>
         <input
           type="button"
-          value="Ja, ich bin mir sicher"
+          value={t('yesImSure')}
           className="custom-delete"
           onClick={handleDelete}
         />

@@ -9,6 +9,7 @@ import { updateCard } from '../redux/dataSlice'
 import { EyeSlashIcon } from '@heroicons/react/24/outline'
 import { EyeIcon } from '@heroicons/react/24/outline'
 import { useSystemService } from '../services/systemService'
+import { useTranslation } from 'react-i18next'
 import toast, { Toaster } from 'react-hot-toast'
 import Spacer from './Spacer'
 
@@ -16,6 +17,7 @@ export default function KeyCard(props) {
   const systemService = useSystemService()
   const { handleEditCard, handleDeleteCard, card } = props
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const selectedFolder = useSelector((state) => state.options.selectedFolder)
 
   const toastConfig = {
@@ -34,12 +36,12 @@ export default function KeyCard(props) {
 
   const handleCopyPassword = () => {
     navigator.clipboard.writeText(card.password)
-    toast('Passwort kopiert!', { ...toastConfig, icon: '🔑' })
+    toast(t('passwordCopied'), { ...toastConfig, icon: '🔑' })
   }
 
   const handleCopyUsername = () => {
     navigator.clipboard.writeText(card.username)
-    toast('Benutzername kopiert!', { ...toastConfig, icon: '👤' })
+    toast(t('usernameCopied'), { ...toastConfig, icon: '👤' })
   }
 
   const handleMinimizeAndPaste = async () => {
@@ -93,7 +95,7 @@ export default function KeyCard(props) {
         <div className="mt-5">
           <input
             type="button"
-            value="Einfügen"
+            value={t('paste')}
             className="bg-blue-500 py-1 px-2 rounded text-white text-sm cursor-pointer hover:bg-blue-400 hover:scale-105 t-200"
             onClick={handleMinimizeAndPaste}
           />

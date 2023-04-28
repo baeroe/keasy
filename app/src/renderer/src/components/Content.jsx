@@ -5,10 +5,12 @@ import Modal from './Modal/Modal'
 import EditCardModal from './Modal/EditCardModal'
 import DeleteCardModal from './Modal/DeleteCardModal'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 export default function Content() {
   const [editCardOpen, setEditCardOpen] = useState(false)
   const [cardInEdit, setCardInEdit] = useState(null)
+  const { t } = useTranslation()
 
   const folders = useSelector((state) => state.data.folders)
   const selectedFolderId = useSelector((state) => state.options.selectedFolder)
@@ -83,7 +85,7 @@ export default function Content() {
       <Modal
         visible={editCardOpen}
         closeModal={handleCloseEditModal}
-        title={cardInEdit ? 'Keycard bearbeiten' : 'Neue Keycard'}
+        title={cardInEdit ? t('editKeycard') : t('newKeycard')}
         content={
           <EditCardModal
             card={cardInEdit}
@@ -96,7 +98,7 @@ export default function Content() {
       <Modal
         visible={deleteCardOpen}
         closeModal={handleCloseDeleteModal}
-        title="Keycard löschen"
+        title={t('deleteKeycard')}
         content={<DeleteCardModal closeModal={handleCloseDeleteModal} card={cardInDelete} />}
       />
     </div>

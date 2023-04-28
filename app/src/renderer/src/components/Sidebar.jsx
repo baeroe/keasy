@@ -7,9 +7,11 @@ import { PencilIcon } from '@heroicons/react/24/outline'
 import DeleteFolderModal from './Modal/DeleteFolderModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectFolder } from '../redux/optionsSlice'
+import { useTranslation } from 'react-i18next'
 
 export default function Sidebar() {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const folders = useSelector((state) => state.data.folders)
   const selectedFolder = useSelector((state) => state.options.selectedFolder)
 
@@ -53,7 +55,7 @@ export default function Sidebar() {
 
   return (
     <div className="flex flex-col h-body overflow-hidden w-60 bg-slate-700 border-r border-slate-950 shadow px-3">
-      <span className="text-xs text-slate-500 mt-2 ml-2">Ordner</span>
+      <span className="text-xs text-slate-500 mt-2 ml-2">{t('folder')}</span>
       {folders.map((item) => (
         <div
           key={item.id}
@@ -77,14 +79,14 @@ export default function Sidebar() {
       ))}
       <div className="sidebar-btn t-200" onClick={() => handleEditFolder(null)}>
         <PlusIcon className="h-6 w-6 text-white mr-2 " />
-        Neuer Ordner
+        {t('newFolder')}
       </div>
 
       {/* edit/create folder modal */}
       <Modal
         visible={editFolderOpen}
         closeModal={handleCloseEditModal}
-        title={folderInEdit ? 'Ordner bearbeiten' : 'Neuer Ordner'}
+        title={folderInEdit ? t('editFolder') : t('newFolder')}
         content={
           <EditFolderModal
             closeModal={() => setEditFolderOpen(false)}
@@ -98,7 +100,7 @@ export default function Sidebar() {
       <Modal
         visible={deleteFolderOpen}
         closeModal={handleCloseDeleteModal}
-        title="Ordner löschen"
+        title={t('deleteFolder')}
         content={
           <DeleteFolderModal
             closeModal={() => setDeleteFolderOpen(false)}

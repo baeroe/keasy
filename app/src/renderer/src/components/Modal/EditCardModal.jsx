@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addCard, updateCard } from '../../redux/dataSlice'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 export default function EditCardModal(props) {
   const { closeModal, visible, card } = props
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const selectedFolderId = useSelector((state) => state.options.selectedFolder)
 
@@ -68,7 +70,7 @@ export default function EditCardModal(props) {
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col w-80">
           <label htmlFor="folderName" className="text-gray-400 text-sm">
-            Name:<span className="text-red-500 ml-0.5">*</span>
+            {t('name')}:<span className="text-red-500 ml-0.5">*</span>
           </label>
           <input
             ref={inputRef}
@@ -81,7 +83,7 @@ export default function EditCardModal(props) {
             onChange={(e) => setCardName(e.target.value)}
           />
           <label htmlFor="folderName" className="text-gray-400 text-sm">
-            Benutzername:<span className="text-red-500 ml-0.5">*</span>
+            {t('username')}:<span className="text-red-500 ml-0.5">*</span>
           </label>
           <input
             type="text"
@@ -93,7 +95,7 @@ export default function EditCardModal(props) {
             onChange={(e) => setCardUserName(e.target.value)}
           />
           <label htmlFor="folderName" className="text-gray-400 text-sm">
-            Passwort:<span className="text-red-500 ml-0.5">*</span>
+            {t('password')}:<span className="text-red-500 ml-0.5">*</span>
           </label>
           <input
             type="password"
@@ -104,7 +106,7 @@ export default function EditCardModal(props) {
             defaultValue={cardPassword}
             onChange={(e) => setCardPassword(e.target.value)}
           />
-          <input type="submit" className="custom-submit" value="Speichern" />
+          <input type="submit" className="custom-submit" value={t('save')} />
         </div>
       </form>
     </div>

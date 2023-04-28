@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { useSystemService } from '../services/systemService'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { init } from '../redux/dataSlice'
 import { setPath, setPassword } from '../redux/optionsSlice'
 import toast, { Toaster } from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -12,6 +13,7 @@ export default function Login() {
   const systemService = useSystemService()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   const toastConfig = {
     duration: 2000,
@@ -67,18 +69,18 @@ export default function Login() {
     e.preventDefault()
 
     if (newFilePath === '') {
-      toast('Kein Speicherort ausgewählt', toastConfig)
+      toast(t('noSaveLocation'), toastConfig)
       return
     }
 
     var existing = await systemService.isFileExisting(newFilePath)
     if (existing) {
-      toast('Datei existiert bereits', toastConfig)
+      toast(t('fileAlreadyExisting'), toastConfig)
       return
     }
 
     if (createPassword !== createPasswordConfirm) {
-      toast('Passwörter stimmen nicht überein', toastConfig)
+      toast(t('pwnotmatching'), toastConfig)
       return
     }
 
@@ -106,14 +108,14 @@ export default function Login() {
 
     var exists = await systemService.isFileExisting(filePath)
     if (!exists) {
-      toast('Datei existiert nicht', toastConfig)
+      toast(t('fileNotExisting'), toastConfig)
       setFilePath('')
       setOpenPassword('')
       return
     }
     var result = await systemService.readKeasyFile(filePath, openPassword)
     if (!result.success) {
-      toast('Falsches Passwort', toastConfig)
+      toast(t('wrongPw'), toastConfig)
       setOpenPassword('')
       return
     }
@@ -133,18 +135,16 @@ export default function Login() {
         className="bg-slate-800 p-10 absolute shadow border border-slate-950 rounded t-500"
       >
         <div className="flex flex-col text-center w-80">
-          <h1 className="mb-8 text-2xl">Wilkommen bei Keasy</h1>
+          <h1 className="mb-8 text-2xl">{t('welcome')}</h1>
           <form className="flex flex-col text-center" onSubmit={handleOpen}>
-            <label className="text-xs mb-1 text-left">Wähle dein Keasyfile aus</label>
+            <label className="text-xs mb-1 text-left">{t('selectKeasyfile')}</label>
             <input
               type="button"
               className=" border-slate-950 bg-slate-600 text-xs rounded py-1 px-2 mb-3 cursor-pointer t-200 hover:scale-105 text-left"
               value={filePath}
               onClick={handleSelectFile}
             />
-            <label className="text-xs mb-1 text-left">
-              Gib dein Passwort zum Entschlüsseln ein
-            </label>
+            <label className="text-xs mb-1 text-left">{t('enterPwForDecryption')}</label>
             <input
               ref={inputRef}
               type="password"
@@ -152,13 +152,13 @@ export default function Login() {
               defaultValue={openPassword}
               onChange={(e) => setOpenPassword(e.target.value)}
             />
-            <input type="submit" className="custom-submit cursor-pointer mb-10" value="Öffnen" />
+            <input type="submit" className="custom-submit cursor-pointer mb-10" value={t('open')} />
           </form>
-          <span className="text-sm mb-3">oder erstelle ein neues Keasyfile</span>
+          <span className="text-sm mb-3">{t('orCreateNew')}</span>
           <input
             type="button"
             className="custom-submit cursor-pointer"
-            value="Erstellen"
+            value={t('create')}
             onClick={() => switchModeCreate()}
           />
         </div>
@@ -180,29 +180,29 @@ export default function Login() {
         />
 
         <form className="flex flex-col w-80" onSubmitCapture={handleCreate}>
-          <h1 className="mb-8 text-2xl text-center mt-5">Create a new keasyfile</h1>
-          <label className="text-xs mb-1">Select a location for your keasyfile</label>
+          <h1 className="mb-8 text-2xl text-center mt-5">{t('createNew')}</h1>
+          <label className="text-xs mb-1">{t('selectLocation')}</label>
           <input
             type="button"
             className=" border-slate-950 bg-slate-600 text-xs rounded py-1 px-2 mb-3 cursor-pointer t-200 hover:scale-105 text-left"
             value={newFilePath}
             onClick={handleSelectLocation}
           />
-          <label className="text-xs mb-1">Enter the password for encryption</label>
+          <label className="text-xs mb-1">{t('enterPwForEncryption')}</label>
           <input
             type="password"
             className="custom-text !w-full mb-3"
             value={createPassword}
             onChange={(e) => setCreatePassword(e.target.value)}
           />
-          <label className="text-xs mb-1">Confirm the password</label>
+          <label className="text-xs mb-1">{t('confirmPw')}</label>
           <input
             type="password"
             className="custom-text !w-full mb-5"
             value={createPasswordConfirm}
             onChange={(e) => setCreatePasswordConfirm(e.target.value)}
           />
-          <input type="submit" className="custom-submit" value="Create" />
+          <input type="submit" className="custom-submit" value={t('create')} />
         </form>
       </div>
       <Toaster />
