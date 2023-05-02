@@ -34,7 +34,11 @@ export const resources = {
       save: 'Save',
       usernameCopied: 'Username copied to clipboard',
       passwordCopied: 'Password copied to clipboard',
-      paste: 'Paste'
+      paste: 'Paste',
+      language: 'Language',
+      english: 'English',
+      german: 'German',
+      settings: 'Settings'
     }
   },
   de: {
@@ -72,11 +76,15 @@ export const resources = {
       save: 'Speichern',
       usernameCopied: 'Benutzername in Zwischenablage kopiert',
       passwordCopied: 'Passwort in Zwischenablage kopiert',
-      paste: 'Einfügen'
+      paste: 'Einfügen',
+      language: 'Sprache',
+      english: 'Englisch',
+      german: 'Deutsch',
+      settings: 'Einstellungen'
     }
   }
 }
 
-const changeLanguage = (lng) => {
+export const changeLanguage = (lng) => {
   i18n.changeLanguage(lng)
 }

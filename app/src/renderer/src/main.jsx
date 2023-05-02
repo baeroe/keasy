@@ -29,9 +29,15 @@ const router = createBrowserRouter([
   }
 ])
 
+var lang = localStorage.getItem('lang')
+if (lang == null) {
+  lang = 'de'
+  localStorage.setItem('lang', lang)
+}
+
 i18n.use(initReactI18next).init({
   resources,
-  lang: localStorage.getItem('lang') || 'de',
+  lng: lang,
   fallbackLng: 'en',
   interpolation: {
     escapeValue: false

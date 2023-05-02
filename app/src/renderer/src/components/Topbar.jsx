@@ -6,11 +6,13 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setPath, setPassword, selectFolder } from '../redux/optionsSlice'
 import { clear } from '../redux/dataSlice'
+import { useTranslation } from 'react-i18next'
 
 export default function Topbar() {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const handleLogOut = () => {
     dispatch(setPath(''))
     dispatch(setPassword(''))
@@ -35,8 +37,8 @@ export default function Topbar() {
       <Modal
         visible={settingsOpen}
         closeModal={() => setSettingsOpen(false)}
-        title="Settings"
-        content={<SettingsModal />}
+        title={t('settings')}
+        content={<SettingsModal closeModal={() => setSettingsOpen(false)} />}
       />
     </div>
   )

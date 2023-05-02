@@ -14,6 +14,7 @@ export default function Login() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { t } = useTranslation()
+  const [validationSet, setValidationSet] = useState([])
 
   const toastConfig = {
     duration: 2000,
@@ -68,6 +69,8 @@ export default function Login() {
   const handleCreate = async (e) => {
     e.preventDefault()
 
+    validateCreate()
+
     if (newFilePath === '') {
       toast(t('noSaveLocation'), toastConfig)
       return
@@ -89,6 +92,19 @@ export default function Login() {
     switchModeOpen()
   }
 
+  const validateCreate = () => {
+    var result = []
+    if (createPassword == '') {
+      result.push('createPassword')
+    }
+    if (createPasswordConfirm == '') {
+      result.push('createPasswordConfirm')
+    }
+
+    setValidationSet(result)
+    return result.length === 0
+  }
+
   //////////////////////////
   // open file and open //
   //////////////////////////
@@ -106,6 +122,7 @@ export default function Login() {
   const handleOpen = async (e) => {
     e.preventDefault()
 
+    validateOpen()
     var exists = await systemService.isFileExisting(filePath)
     if (!exists) {
       toast(t('fileNotExisting'), toastConfig)
@@ -125,6 +142,16 @@ export default function Login() {
     dispatch(setPassword(openPassword))
 
     navigate('/app')
+  }
+
+  const validateOpen = () => {
+    var result = []
+    if (createPassword == '') {
+      result.push('openPassword')
+    }
+
+    setValidationSet(result)
+    return result.length === 0
   }
 
   return (
@@ -148,7 +175,9 @@ export default function Login() {
             <input
               ref={inputRef}
               type="password"
-              className="custom-text !w-full mb-6"
+              className={`custom-text ! w-full mb-6 ${
+                validationSet.includes('openPassword') ? '!bg-red-100 !border-red-500 border' : ''
+              }`}
               defaultValue={openPassword}
               onChange={(e) => setOpenPassword(e.target.value)}
             />
@@ -191,14 +220,20 @@ export default function Login() {
           <label className="text-xs mb-1">{t('enterPwForEncryption')}</label>
           <input
             type="password"
-            className="custom-text !w-full mb-3"
+            className={`custom-text !w-full mb-3 ${
+              validationSet.includes('createPassword') ? '!bg-red-100 !border-red-500 border' : ''
+            }`}
             value={createPassword}
             onChange={(e) => setCreatePassword(e.target.value)}
           />
           <label className="text-xs mb-1">{t('confirmPw')}</label>
           <input
             type="password"
-            className="custom-text !w-full mb-5"
+            className={`custom-text !w-full mb-5 ${
+              validationSet.includes('createPasswordConfirm')
+                ? '!bg-red-100 !border-red-500 border'
+                : ''
+            }`}
             value={createPasswordConfirm}
             onChange={(e) => setCreatePasswordConfirm(e.target.value)}
           />

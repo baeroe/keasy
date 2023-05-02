@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, dialog, ipcMain, clipboard } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import robot from 'robotjs'
 const fs = require('fs')
 import icon from '../../resources/icon.png?asset'
 
@@ -35,13 +36,14 @@ function createWindow() {
   })
 
   ipcMain.handle('minimizeAndPasteCredentials', (event, config) => {
-    // mainWindow.minimize()
     // mainWindow.hide()
-    // if (process.platform == 'darwin') app.hide()
-    // mainWindow.minimize()
-    // clipboard.writeText(config.username)
-    // // 'command+k', 'ctrl+k'
-    // mainWindow.webContents.sendInputEvent({ keyCode: 'CommandOrControl+V', type: 'keyDown' })
+    robot.setKeyboardDelay(100)
+    robot.keyTap('tab', 'command')
+    robot.keyTap('enter')
+    robot.typeString(config.username)
+    robot.keyTap('tab')
+    robot.typeString(config.password)
+    robot.keyTap('enter')
   })
 
   mainWindow.on('ready-to-show', () => {
