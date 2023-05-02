@@ -4,6 +4,11 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import robot from 'robotjs'
 const fs = require('fs')
 import icon from '../../resources/icon.png?asset'
+const os = require('os')
+
+const isMac = os.platform() === 'darwin'
+const isWindows = os.platform() === 'win32'
+const isLinux = os.platform() === 'linux'
 
 function createWindow() {
   // Create the browser window.
@@ -31,15 +36,18 @@ function createWindow() {
     var buffer = fs.readFileSync(path)
     return buffer.toString()
   })
-  ipcMain.handle('isFileExisting', (event, path) => {
+  ipcMain.handle('isFileExisting', (evssworent, path) => {
     return fs.existsSync(path)
   })
 
   ipcMain.handle('minimizeAndPasteCredentials', (event, config) => {
-    // mainWindow.hide()
-    robot.setKeyboardDelay(100)
-    robot.keyTap('tab', 'command')
-    robot.keyTap('enter')
+    if (isMac) {
+      robot.keyTap('tab', 'command')
+      robot.keyTap('enter')
+    }
+    if (isWindows) {
+      robot.keyTap('tab', 'alt')
+    }
     robot.typeString(config.username)
     robot.keyTap('tab')
     robot.typeString(config.password)
