@@ -19,11 +19,17 @@ jobs:
         with:
           node-version: 18
           
-      - name: Install npm packages
-        run: npm install --prefix ./app || exit 0
+      - name: Install electron rebuilder
+        run: npm install --save-dev electron-rebuild
+        working-directory: ./app
           
       - name: Run the electron rebuilder
-        run: ./app/node_modules/.bin/electron-rebuild --module-dir app
+        run: ./node_modules/.bin/electron-rebuild
+        working-directory: ./app
+        
+      - name: Install npm packages
+        run: npm install --prefix ./app
+        working-directory: ./app
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
