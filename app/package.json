@@ -31,6 +31,7 @@
     "robotjs": "^0.6.0"
   },
   "devDependencies": {
+    "@electron-forge/publisher-github": "^6.1.1",
     "@electron/notarize": "^1.2.3",
     "@electron/rebuild": "^3.2.13",
     "@vitejs/plugin-react": "^3.1.0",
@@ -48,5 +49,20 @@
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.3.1",
     "vite": "^4.2.1"
+  },
+  "config": {
+    "forge": {
+      "publishers": [
+        {
+          "name": "@electron-forge/publisher-github",
+          "config": {
+            "repository": {
+              "owner": "baeroe",
+              "name": "keasy"
+            }
+          }
+        }
+      ]
+    }
   }
 }
