@@ -48,9 +48,9 @@ function createWindow() {
     if (isWindows) {
       robot.keyTap('tab', 'alt')
     }
-    robot.typeString(config.username)
+    robot.typeStringDelayed(config.username, 6000)
     robot.keyTap('tab')
-    robot.typeString(config.password)
+    robot.typeStringDelayed(config.password, 6000)
     robot.keyTap('enter')
   })
 

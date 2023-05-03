@@ -4,7 +4,7 @@ import App from './routes/App'
 import Login from './routes/Login'
 import { store } from './redux/store'
 import { Provider } from 'react-redux'
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, Navigate, createHashRouter } from 'react-router-dom'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { resources } from './common/translations'
@@ -14,7 +14,7 @@ import './assets/styles/main.css'
 import './assets/styles/animations.css'
 import 'react-tooltip/dist/react-tooltip.css'
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <Navigate to="/login" />

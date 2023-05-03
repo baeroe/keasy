@@ -1,9 +1,9 @@
 {
   "name": "keasy",
   "version": "1.0.0",
-  "description": "An Electron application with React",
+  "description": "Keasy is a simple password manager for your desktop.",
   "main": "./out/main/index.js",
-  "author": "example.com",
+  "author": "rafaelhingerl.com",
   "homepage": "https://www.electronjs.org",
   "scripts": {
     "format": "prettier --write .",
