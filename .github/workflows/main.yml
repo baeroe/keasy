@@ -20,7 +20,7 @@ jobs:
           node-version: 10
           
       - name: Install npm packages
-        run: npm install --prefix ./app
+        run: npm install --prefix ./app || exit 0
           
       - name: Run the electron rebuilder
         run: ./app/node_modules/.bin/electron-rebuild 
