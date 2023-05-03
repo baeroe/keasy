@@ -3,7 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import robot from 'robotjs'
 const fs = require('fs')
-import icon from '../../resources/icon.png?asset'
+import icon from '../../resources/icon.png'
 const os = require('os')
 
 const isMac = os.platform() === 'darwin'
@@ -21,7 +21,8 @@ function createWindow() {
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
-    }
+    },
+    title: 'Keasy'
   })
 
   ipcMain.handle('showOpenDialog', (event, config) => {
@@ -92,6 +93,9 @@ app.whenReady().then(() => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+  app.on('window-all-closed', () => {
+    app.quit()
   })
 })
 

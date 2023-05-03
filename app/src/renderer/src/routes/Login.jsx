@@ -6,6 +6,7 @@ import { init } from '../redux/dataSlice'
 import { setPath, setPassword } from '../redux/optionsSlice'
 import toast, { Toaster } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import logo from '../assets/img/keasy_logo.png'
 
 import { useNavigate } from 'react-router-dom'
 
@@ -193,7 +194,7 @@ export default function Login() {
         </div>
         <div className="absolute top-0 placement-logo">
           <div className="w-20 h-20 rounded-full bg-white border border-slate-950 shadow text-black text-center p-5 text-3xl">
-            K
+            <img className="scale-150 rounded-full" src={logo} alt="keasy_logo" />
           </div>
         </div>
       </div>
