@@ -20,7 +20,7 @@ jobs:
           node-version: 18
           
       - name: Install electron rebuilder
-        run: npm install --save-dev electron-rebuild
+        run: npm install --save-dev @electron/rebuild
         working-directory: ./app
           
       - name: Run the electron rebuilder
