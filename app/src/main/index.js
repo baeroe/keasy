@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, dialog, ipcMain, clipboard } from 'electron'
+import { app, shell, BrowserWindow, dialog, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import robot from 'robotjs'
