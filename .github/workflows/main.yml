@@ -26,10 +26,7 @@ jobs:
       - name: Run the electron rebuilder
         run: ./node_modules/.bin/electron-rebuild
         working-directory: ./app
-        
-      - name: Install npm packages
-        run: npm install --prefix ./app
-        working-directory: ./app
+      
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
