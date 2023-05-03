@@ -5,7 +5,7 @@ import Login from './routes/Login'
 import { store } from './redux/store'
 import { Provider } from 'react-redux'
 import { createBrowserRouter, RouterProvider, Navigate, createHashRouter } from 'react-router-dom'
-import i18n from 'i18next'
+import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { resources } from './common/translations'
 
