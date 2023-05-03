@@ -18,6 +18,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10
+          
+      - name: Rebuild robotjs
+        run: ./node_modules/.bin/electron-rebuild 
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
