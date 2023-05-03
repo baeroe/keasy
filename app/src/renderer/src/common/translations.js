@@ -1,4 +1,4 @@
-import i18n from 'i18next'
+import i18next from 'i18next'
 
 export const resources = {
   en: {
@@ -86,5 +86,5 @@ export const resources = {
 }
 
 export const changeLanguage = (lng) => {
-  i18n.changeLanguage(lng)
+  i18next.changeLanguage(lng)
 }

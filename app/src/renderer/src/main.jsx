@@ -4,7 +4,7 @@ import App from './routes/App'
 import Login from './routes/Login'
 import { store } from './redux/store'
 import { Provider } from 'react-redux'
-import { createBrowserRouter, RouterProvider, Navigate, createHashRouter } from 'react-router-dom'
+import { RouterProvider, Navigate, createHashRouter } from 'react-router-dom'
 import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { resources } from './common/translations'
@@ -35,7 +35,7 @@ if (lang == null) {
   localStorage.setItem('lang', lang)
 }
 
-i18n.use(initReactI18next).init({
+i18next.use(initReactI18next).init({
   resources,
   lng: lang,
   fallbackLng: 'en',
