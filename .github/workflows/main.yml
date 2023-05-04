@@ -49,7 +49,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dist
-          path: app/dist
+          path: |
+            app/dist/*.dmg
+            app/dist/*.exe
         
 
               
