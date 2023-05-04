@@ -53,6 +53,11 @@ jobs:
             app/dist/*.dmg
             app/dist/*mac.zip
             app/dist/*.exe
+            
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/*"
+
         
 
               
