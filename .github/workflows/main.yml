@@ -51,6 +51,7 @@ jobs:
           name: dist
           path: |
             app/dist/*.dmg
+            app/dist/*mac.zip
             app/dist/*.exe
         
 
