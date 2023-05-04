@@ -48,8 +48,8 @@ jobs:
       - name: archive artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: dist-without-markdown
-          path: dist
+          name: dist
+          path: app/dist
         
 
               
