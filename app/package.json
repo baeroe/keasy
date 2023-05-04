@@ -14,11 +14,7 @@
     "postinstall": "electron-builder install-app-deps",
     "build:win": "npm run build && electron-builder --win --config",
     "build:mac": "npm run build && electron-builder --mac --config",
-    "build:linux": "npm run build && electron-builder --linux --config",
-    "ef:start": "electron-forge start",
-    "ef:package": "electron-forge package",
-    "ef:make": "electron-forge make",
-    "ef:publish": "electron-forge publish"
+    "build:linux": "npm run build && electron-builder --linux --config"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^1.0.3",
@@ -35,11 +31,6 @@
     "robotjs": "^0.6.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.1.1",
-    "@electron-forge/maker-deb": "^6.1.1",
-    "@electron-forge/maker-squirrel": "^6.1.1",
-    "@electron-forge/maker-zip": "^6.1.1",
-    "@electron-forge/publisher-github": "^6.1.1",
     "@electron/notarize": "^1.2.3",
     "@electron/rebuild": "^3.2.13",
     "@vitejs/plugin-react": "^3.1.0",
