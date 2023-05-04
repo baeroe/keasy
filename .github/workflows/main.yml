@@ -6,7 +6,7 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  build:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -56,7 +56,11 @@ jobs:
             app/dist/*.dmg
             app/dist/*mac.zip
             app/dist/*.exe
-            
+  
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: create release
         uses: ncipollo/release-action@v1
         with:
