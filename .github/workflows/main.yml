@@ -49,7 +49,7 @@ jobs:
         working-directory: ./app
         
       - name: archive artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@master
         with:
           name: dist
           path: |
@@ -61,10 +61,19 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@master
+
+      - name: download artifacts
+        uses: actions/download-artifact@master
+        with:
+          name: dist
+          path: artifacts
+    
       - name: create release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "dist"
+          artifacts: "artifacts/dist"
 
         
 
