@@ -45,11 +45,11 @@ jobs:
         run: npm run build:win
         working-directory: ./app
         
-      - name: publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run publish
-        working-directory: ./app
+      - name: archive artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-without-markdown
+          path: dist
         
 
               
