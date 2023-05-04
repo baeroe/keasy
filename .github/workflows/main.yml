@@ -69,9 +69,6 @@ jobs:
         with:
           name: dist
           path: artifacts
-          
-      - name: print out dist
-        run: ls /home/runner/work/keasy/keasy/artifacts/dist
         
       - name: print out artifacts
         run: ls /home/runner/work/keasy/keasy/artifacts
