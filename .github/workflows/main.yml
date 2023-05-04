@@ -35,14 +35,8 @@ jobs:
       - name: Postinstall npm packages
         run: npm run postinstall
         working-directory: ./app
-      
-      - name: build application mac
-        if: matrix.os == 'macos-latest'
-        run: npm run build:mac
-        working-directory: ./app
               
       - name: build application win
-        if: matrix.os == 'windows-latest'
         run: npm run build:win
         working-directory: ./app
         
